@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "5001:5001"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+      - FLASK_RUN_PORT=5001
+      - REDIS_HOST=redis  # Имя сервиса Redis
+      - REDIS_PORT=6379   # Порт Redis
+    depends_on:
+      - redis  # Зависимость от сервиса Redis
+    command: flask run --host=0.0.0.0 --port=5001
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:

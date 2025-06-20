@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "5001:5001"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+      - FLASK_RUN_PORT=5001
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=myHibernate
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=expo
+    depends_on:
+      - db
+    command: flask run --host=0.0.0.0 --port=5001
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=myHibernate
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=expo
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5433:5432"
+
+volumes:
+  postgres_data:

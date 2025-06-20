@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "5001:5001"  # Порт для Flask-приложения
+    volumes:
+      - .:/app  # Монтируем текущую директорию в /app внутри контейнера
+    environment:
+      - FLASK_ENV=development
+      - FLASK_RUN_PORT=5001
+      - SECRET_KEY=your_secret_key
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=myHibernate
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=expo
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+    depends_on:
+      - db
+      - redis
+    command: flask run --host=0.0.0.0 --port=5001
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=myHibernate
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=expo
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Сохраняем данные PostgreSQL
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Скрипт инициализации
+    ports:
+      - "5433:5432"  # Изменяем порт на хосте с 5432 на 5433
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"  # Порт для Redis
+    volumes:
+      - redis_data:/data  # Сохраняем данные Redis
+
+volumes:
+  postgres_data:
+  redis_data:
