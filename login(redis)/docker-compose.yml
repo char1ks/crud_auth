@@ -9,10 +9,15 @@ services:
     environment:
       - FLASK_ENV=development
       - FLASK_RUN_PORT=5001
-      - REDIS_HOST=redis  # Имя сервиса Redis
-      - REDIS_PORT=6379   # Порт Redis
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=auth_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=expo
     depends_on:
-      - redis  # Зависимость от сервиса Redis
+      - redis
+      - postgres
     command: flask run --host=0.0.0.0 --port=5001
 
   redis:
@@ -22,5 +27,18 @@ services:
     volumes:
       - redis_data:/data
 
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: auth_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: expo
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
 volumes:
   redis_data:
+  postgres_data:
