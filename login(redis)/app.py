@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_session import Session
+from werkzeug.middleware.proxy_fix import ProxyFix
 import redis
 import psycopg2
 import psycopg2.extras
@@ -7,6 +8,11 @@ import os
 import bcrypt
 
 app = Flask(__name__)
+
+# Исправляем генерацию URL за прокси-сервером (GitHub Codespaces)
+app.wsgi_app = ProxyFix(
+    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1
+)
 
 # --- Конфигурация ---
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'super-secret-key-that-is-long-and-random')
