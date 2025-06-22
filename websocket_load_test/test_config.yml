@@ -1,0 +1,13 @@
+config:
+  target: "ws://127.0.0.1:8765"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      rampTo: 100  # к концу 60 сек дойдёт до 100 соединений в секунду
+scenarios:
+  - engine: "ws"
+    flow:
+      - loop:
+          - send: "ping"
+          - think: 0.05
+        count: 1000 

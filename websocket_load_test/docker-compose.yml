@@ -1,0 +1,10 @@
+services:
+  websocket-test:
+    build: .
+    ports:
+      - "8765:8765"
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+    container_name: websocket_load_test 
