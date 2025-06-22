@@ -111,7 +111,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Login</h1>
+        <h1>Вход</h1>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -120,13 +120,13 @@
             {% endif %}
         {% endwith %}
         <form method="POST">
-            <label for="username">Username:</label>
+            <label for="username">Имя пользователя:</label>
             <input type="text" id="username" name="username" required>
-            <label for="password">Password:</label>
+            <label for="password">Пароль:</label>
             <input type="password" id="password" name="password" required>
-            <button type="submit">Login</button>
+            <button type="submit">Войти</button>
         </form>
-        <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a>.</p>
+        <p>Нет аккаунта? <a href="{{ url_for('register') }}">Зарегистрируйтесь здесь</a>.</p>
     </div>
 </body>
 <script type="module">

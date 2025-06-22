@@ -111,9 +111,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome, {{ username }}!</h1>
-        <p>You are now logged in.</p>
-        <a href="{{ url_for('logout') }}">Logout</a>
+        <h1>Добро пожаловать, {{ username }}!</h1>
+        <p>Вы успешно вошли в систему.</p>
+        <p><strong>Ваша секретная информация:</strong> {{ secret }}</p>
+        <a href="{{ url_for('logout') }}">Выйти</a>
     </div>
 </body>
     <script type="module">

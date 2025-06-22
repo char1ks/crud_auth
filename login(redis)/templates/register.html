@@ -111,7 +111,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Register</h1>
+        <h1>Регистрация</h1>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -124,6 +124,8 @@
             <input type="text" id="username" name="username" required>
             <label for="password">Пароль:</label>
             <input type="password" id="password" name="password" required>
+            <label for="secret">Введите секретную информацию:</label>
+            <input type="text" id="secret" name="secret" required>
             <button type="submit">Зарегистрироваться</button>
         </form>
         <p>Уже есть аккаунт? <a href="{{ url_for('login') }}">Войдите здесь</a>.</p>

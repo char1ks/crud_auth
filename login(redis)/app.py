@@ -45,7 +45,7 @@ def check_password(password, hashed_password):
 @app.route('/')
 def home():
     if 'user_id' in session:
-        return render_template('home.html', username=session.get('username'))
+        return render_template('home.html', username=session.get('username'), secret=session.get('secret'))
     return redirect(url_for('login'))
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -53,9 +53,10 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        secret = request.form['secret']
 
-        if not username or not password:
-            flash('Username and password are required!', 'error')
+        if not username or not password or not secret:
+            flash('Имя пользователя, пароль и секретная информация обязательны!', 'error')
             return render_template('register.html')
 
         hashed_password = hash_password(password)
@@ -64,14 +65,14 @@ def register():
         cur = conn.cursor()
         try:
             cur.execute(
-                'INSERT INTO users (username, password_hash) VALUES (%s, %s)',
-                (username, hashed_password.decode('utf-8'))
+                'INSERT INTO users (username, password_hash, secret) VALUES (%s, %s, %s)',
+                (username, hashed_password.decode('utf-8'), secret)
             )
             conn.commit()
-            flash('Registration successful! Please log in.', 'success')
+            flash('Регистрация прошла успешно! Пожалуйста, войдите в систему.', 'success')
             return redirect(url_for('login'))
         except psycopg2.IntegrityError:
-            flash('Username already exists!', 'error')
+            flash('Имя пользователя уже существует!', 'error')
         finally:
             cur.close()
             conn.close()
@@ -94,17 +95,18 @@ def login():
         if user and check_password(password, user['password_hash']):
             session['user_id'] = user['id']
             session['username'] = user['username']
-            flash('Login successful!', 'success')
+            session['secret'] = user['secret']
+            flash('Вход выполнен успешно!', 'success')
             return redirect(url_for('home'))
         else:
-            flash('Invalid username or password!', 'error')
+            flash('Неверное имя пользователя или пароль!', 'error')
 
     return render_template('login.html')
 
 @app.route('/logout')
 def logout():
     session.clear()
-    flash('You have been logged out.', 'success')
+    flash('Вы вышли из системы.', 'success')
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
