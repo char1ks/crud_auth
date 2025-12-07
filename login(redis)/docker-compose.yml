@@ -28,7 +28,7 @@ services:
       - redis_data:/data
 
   postgres:
-    image: postgres:latest
+    image: postgres:15
     environment:
       POSTGRES_DB: auth_db
       POSTGRES_USER: postgres
@@ -36,9 +36,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_fixed:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   redis_data:
-  postgres_data:
+  postgres_data_fixed:
