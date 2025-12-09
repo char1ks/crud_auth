@@ -36,19 +36,8 @@
 ### Через docker-compose
 
 ```bash
-docker compose exec redis redis-cli
+docker compose exec redis redis-cli KEYS "*"
 ```
-
-Увидите приглашение `127.0.0.1:6379>`, после чего можно выполнять команды:
-
-- Показать все кешированные пользователи:  
-  ```redis
-  KEYS users_add:*
-  ```
-- Получить пользователя с id = 1 из кэша:  
-  ```redis
-  GET users_add:1
-  ```
 ---
 
 Приятной работы и быстрых запросов!
