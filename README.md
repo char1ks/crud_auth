@@ -14,7 +14,7 @@
 
 1. Перейдите в каталог стенда:
    ```bash
-   cd crud(postgres+redis)
+   cd "login(redis)"
    ```
 2. Поднимите сервисы:
    ```bash
