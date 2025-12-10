@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, make_response
 from flask_session import Session
 from werkzeug.middleware.proxy_fix import ProxyFix
 import redis
@@ -108,7 +108,9 @@ def login():
 def logout():
     session.clear()
     flash('Вы вышли из системы.', 'success')
-    return redirect(url_for('login'))
+    resp = make_response(redirect(url_for('login')))
+    resp.delete_cookie(app.config.get('SESSION_COOKIE_NAME', 'session'))
+    return resp
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
