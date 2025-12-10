@@ -93,6 +93,7 @@ def login():
         conn.close()
 
         if user and check_password(password, user['password_hash']):
+            session.clear()  
             session['user_id'] = user['id']
             session['username'] = user['username']
             session['secret'] = user['secret']
